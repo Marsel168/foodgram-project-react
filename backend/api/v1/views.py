@@ -1,27 +1,22 @@
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet, GenericViewSet
-from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly, IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.exceptions import ValidationError
 from django.template.loader import render_to_string
 from django.http import HttpResponse
 from weasyprint import HTML
-from djoser.serializers import SetPasswordSerializer, SetPasswordRetypeSerializer
-from djoser import utils
-from djoser.views import TokenDestroyView, UserViewSet
+from djoser.views import UserViewSet
 
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView, get_object_or_404
-from rest_framework import mixins
-from rest_framework_simplejwt.tokens import RefreshToken
 
 from recipes.models import Recipe, Tag, Ingredient, ShoppingList, FavoriteRecipe
 from .serializers import (RecipeSerializer, TagSerializer,
                           IngredientSerializer,
-                          CustomUserCreateSerializer, CustomUserSerializer, FollowSerializer, ShortRecipeSerializer)
+                          CustomUserSerializer, FollowSerializer, ShortRecipeSerializer)
 from .permissions import IsAuthorOrReadOnly
 from .filters import RecipeFilter, IngredientSearchFilter
 from .shopping_list import get_ingredients

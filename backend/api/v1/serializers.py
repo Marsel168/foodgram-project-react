@@ -1,11 +1,8 @@
 from rest_framework import serializers
-from rest_framework.validators import UniqueValidator
 from djoser.serializers import UserCreateSerializer, UserSerializer
-from django.shortcuts import get_object_or_404
-from django.core.exceptions import ValidationError
 from recipes.models import (Recipe, Tag, IngredientRecipe,
                             Ingredient, FavoriteRecipe, ShoppingList)
-from users.models import User, Follow, ConfirmationCode
+from users.models import User, Follow
 from drf_base64.fields import Base64ImageField
 
 
