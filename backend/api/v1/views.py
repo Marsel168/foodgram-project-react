@@ -4,6 +4,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.filters import SearchFilter
 from rest_framework import status
 from django.template.loader import render_to_string
 from django.http import HttpResponse
@@ -18,7 +19,7 @@ from .serializers import (RecipeSerializer, TagSerializer,
                           IngredientSerializer,
                           CustomUserSerializer, FollowSerializer, ShortRecipeSerializer)
 from .permissions import IsAuthorOrReadOnly
-from .filters import RecipeFilter, IngredientSearchFilter
+from .filters import RecipeFilter
 from .shopping_list import get_ingredients
 from users.models import User, Follow
 
@@ -34,7 +35,7 @@ class IngredientViewSet(ReadOnlyModelViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
     pagination_class = None
-    filter_backends = (IngredientSearchFilter,)
+    filter_backends = (SearchFilter,)
     search_fields = ('^name',)
 
 

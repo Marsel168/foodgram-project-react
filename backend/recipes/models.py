@@ -41,13 +41,13 @@ class Recipe(models.Model):
         )
     )
 
-    def __str__(self):
-        return self.name
-
     class Meta:
         ordering = ('-id',)
         verbose_name = 'Рецепт'
         verbose_name_plural = 'Рецепты'
+
+    def __str__(self):
+        return self.name
 
 
 class Tag(models.Model):
@@ -57,13 +57,13 @@ class Tag(models.Model):
     color = ColorField(default='#FF0000')
     slug = models.SlugField('Адрес', unique=True)
 
-    def __str__(self):
-        return self.name
-
     class Meta:
         ordering = ('-id',)
         verbose_name = 'Тэг'
         verbose_name_plural = 'Тэги'
+
+    def __str__(self):
+        return self.name
 
 
 class Ingredient(models.Model):
@@ -75,13 +75,13 @@ class Ingredient(models.Model):
         max_length=32,
     )
 
-    def __str__(self):
-        return self.name
-
     class Meta:
         ordering = ('-id',)
         verbose_name = 'Ингредиент'
         verbose_name_plural = 'Ингредиенты'
+
+    def __str__(self):
+        return self.name
 
 
 class IngredientRecipe(models.Model):
@@ -107,12 +107,12 @@ class IngredientRecipe(models.Model):
         verbose_name='Количество',
     )
 
-    def __str__(self):
-        return f'{self.recipe}: {self.ingredient}'
-
     class Meta:
         verbose_name = 'Ингредиент в рецепте'
         verbose_name_plural = 'Ингредиенты в рецепте'
+
+    def __str__(self):
+        return f'{self.recipe}: {self.ingredient}'
 
 
 class FavoriteRecipe(models.Model):

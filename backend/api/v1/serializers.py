@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from djoser.serializers import UserCreateSerializer, UserSerializer
+from django.db import transaction
+
 from recipes.models import (Recipe, Tag, IngredientRecipe,
                             Ingredient, FavoriteRecipe, ShoppingList)
 from users.models import User, Follow
@@ -23,7 +25,7 @@ class CustomUserSerializer(UserSerializer):
 
     def get_is_subscribed(self, author):
         user = self.context.get('request').user
-        return not user.is_anonymous and Follow.objects.filter(
+        return user.is_authenticated and Follow.objects.filter(
             user=user,
             author=author.id
         ).exists()
@@ -81,17 +83,13 @@ class RecipeListSerializer(serializers.ModelSerializer):
 
     def get_is_favorited(self, obj):
         request = self.context.get('request')
-        if not request or request.user.is_anonymous:
-            return False
         return FavoriteRecipe.objects.filter(recipe=obj,
-                                             user=request.user).exists()
+                                             user=request.user.id).exists()
 
     def get_is_in_shopping_cart(self, obj):
         request = self.context.get('request')
-        if not request or request.user.is_anonymous:
-            return False
         return ShoppingList.objects.filter(recipe=obj,
-                                           user=request.user).exists()
+                                           user=request.user.id).exists()
 
 
 class AddIngredientSerializer(serializers.ModelSerializer):
@@ -117,7 +115,6 @@ class RecipeSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
         ingredients = attrs.get('ingredients')
-        print(attrs)
         ingredients_list = []
         for ingredient in ingredients:
             ingredient_id = ingredient['id']
@@ -157,6 +154,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         for tag in tags:
             recipe.tags.add(tag)
 
+    @transaction.atomic
     def create(self, validated_data):
         author = self.context.get('request').user
         tags = validated_data.pop('tags')
