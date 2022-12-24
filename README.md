@@ -9,6 +9,10 @@
 
 Документация по API: ...
 
+Админка
+Login: marsel
+Password: marsel
+
 ### Используемые технологии:
 - Python 3.8.6  
 - Django 4.1.4  
