@@ -2,8 +2,6 @@ from django.http import HttpResponse
 from django.template.loader import render_to_string
 from django_filters.rest_framework import DjangoFilterBackend
 from djoser.views import UserViewSet
-from recipes.models import (FavoriteRecipe, Ingredient, Recipe, ShoppingList,
-                            Tag)
 from rest_framework.decorators import action
 from rest_framework.filters import SearchFilter
 from rest_framework.generics import ListAPIView, get_object_or_404
@@ -14,8 +12,11 @@ from rest_framework.status import (HTTP_201_CREATED, HTTP_204_NO_CONTENT,
                                    HTTP_400_BAD_REQUEST)
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
-from users.models import Follow, User
 from weasyprint import HTML
+
+from recipes.models import (FavoriteRecipe, Ingredient, Recipe, ShoppingList,
+                            Tag)
+from users.models import Follow, User
 
 from .filters import RecipeFilter
 from .permissions import IsAuthorOrReadOnly

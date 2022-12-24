@@ -4,7 +4,7 @@ from recipes.models import IngredientRecipe
 
 
 def get_ingredients(user):
-    ingredients = IngredientRecipe.objects.filter(
+    return IngredientRecipe.objects.filter(
         recipe__shopping_recipe__user=user
     ).values(
         name=F('ingredient__name'),
@@ -12,4 +12,3 @@ def get_ingredients(user):
     ).annotate(amount=Sum('amount')).values_list(
         'ingredient__name', 'amount', 'ingredient__measurement_unit'
     )
-    return ingredients
