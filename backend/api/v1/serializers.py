@@ -1,11 +1,11 @@
-from rest_framework import serializers
-from djoser.serializers import UserCreateSerializer, UserSerializer
 from django.db import transaction
-
-from recipes.models import (Recipe, Tag, IngredientRecipe,
-                            Ingredient, FavoriteRecipe, ShoppingList)
-from users.models import User, Follow
+from djoser.serializers import UserCreateSerializer, UserSerializer
 from drf_base64.fields import Base64ImageField
+
+from recipes.models import (FavoriteRecipe, Ingredient, IngredientRecipe, Recipe,
+                            ShoppingList, Tag)
+from rest_framework import serializers
+from users.models import Follow, User
 
 
 class CustomUserCreateSerializer(UserCreateSerializer):
@@ -126,7 +126,8 @@ class RecipeSerializer(serializers.ModelSerializer):
             amount = ingredient['amount']
             if int(amount) <= 0:
                 raise serializers.ValidationError({
-                    'ingredients': 'Количество ингредиентов должно быть больше нуля!'
+                    'ingredients': 'Количество ингредиентов '
+                                   'должно быть больше нуля!'
                 })
 
         tags = attrs.get('tags')
@@ -146,7 +147,8 @@ class RecipeSerializer(serializers.ModelSerializer):
     def add_ingredients(ingredients, recipe):
         for ingredient in ingredients:
             IngredientRecipe.objects.update_or_create(
-                recipe=recipe, ingredient=ingredient['id'], amount=ingredient['amount']
+                recipe=recipe, ingredient=ingredient['id'],
+                amount=ingredient['amount']
             )
 
     @staticmethod
@@ -186,7 +188,8 @@ class FavoriteRecipeSerializer(serializers.ModelSerializer):
         if not request or request.user.is_anonymous:
             return False
         recipe = attrs.get('recipe')
-        if FavoriteRecipe.objects.filter(user=request.user, recipe=recipe).exist():
+        if FavoriteRecipe.objects.filter(user=request.user,
+                                         recipe=recipe).exist():
             raise serializers.ValidationError({
                 'status': 'Рецепт уже есть в избранном!'
             })

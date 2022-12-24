@@ -1,7 +1,8 @@
-from django.db import models
 from django.contrib.auth.models import AbstractUser
-from django.db.models import F, Q
+from django.db import models
+
 from foodgram.settings import AUTH_USER_MODEL
+
 from .managers import CustomUserManager
 
 
@@ -109,7 +110,7 @@ class Follow(models.Model):
                 name='unique_follow',
             ),
             models.CheckConstraint(
-                check=~Q(user=F('author')),
+                check=~models.Q(user=models.F('author')),
                 name='non_self_following',
             ),
         )

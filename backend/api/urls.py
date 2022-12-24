@@ -1,9 +1,9 @@
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from .v1.views import (RecipeViewSet, IngredientViewSet,
-                       TagViewSet, CustomUserViewSet,
-                       FollowView, FollowListView)
+from django.urls import include, path
 from djoser.views import TokenCreateView, TokenDestroyView
+from rest_framework.routers import DefaultRouter
+
+from .v1.views import (CustomUserViewSet, FollowListView, FollowView,
+                       IngredientViewSet, RecipeViewSet, TagViewSet)
 
 router_v1 = DefaultRouter()
 router_v1.register(r'recipes', RecipeViewSet, basename='recipes')
@@ -17,8 +17,10 @@ auth_urls = [
 ]
 
 users_urls = [
-    path('users/subscriptions/', FollowListView.as_view(), name='subscription'),
-    path('users/<int:user_id>/subscribe/', FollowView.as_view(), name='subscribe'),
+    path('users/subscriptions/',
+         FollowListView.as_view(), name='subscription'),
+    path('users/<int:user_id>/subscribe/',
+         FollowView.as_view(), name='subscribe'),
 ]
 
 urlpatterns = [
@@ -27,4 +29,3 @@ urlpatterns = [
     path('', include(router_v1.urls)),
     path('', include('djoser.urls'))
 ]
-

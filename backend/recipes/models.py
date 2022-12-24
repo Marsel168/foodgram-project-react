@@ -1,7 +1,6 @@
-from django.db import models
-from django.core.validators import MinValueValidator
 from colorfield.fields import ColorField
-
+from django.core.validators import MinValueValidator
+from django.db import models
 from foodgram.settings import AUTH_USER_MODEL
 
 
