@@ -45,3 +45,4 @@ urllib3==1.26.13
 weasyprint==57.1
 webencodings==0.5.1
 zopfli==0.2.2
+gunicorn==20.0.4
