@@ -12,7 +12,6 @@ from rest_framework.status import (HTTP_201_CREATED, HTTP_204_NO_CONTENT,
                                    HTTP_400_BAD_REQUEST)
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
-from weasyprint import HTML
 
 from recipes.models import (FavoriteRecipe, Ingredient, Recipe, ShoppingList,
                             Tag)
@@ -85,11 +84,11 @@ class RecipeViewSet(ModelViewSet):
     @action(detail=False, methods=['get'])
     def download_shopping_cart(self, request):
         ingredients = get_ingredients(request.user)
-        html_template = render_to_string('shopping_cart.html',
-                                         {'ingredients': ingredients})
-        html = HTML(string=html_template)
-        result = html.write_pdf()
-        response = HttpResponse(result, content_type='application/pdf;')
+        # html_template = render_to_string('shopping_cart.html',
+        #                                  {'ingredients': ingredients})
+        # html = HTML(string=html_template)
+        # result = html.write_pdf()
+        response = HttpResponse(ingredients, content_type='application/pdf;')
         response['Content-Disposition'] = 'inline; filename=shopping_list.pdf'
         response['Content-Transfer-Encoding'] = 'binary'
         return response
