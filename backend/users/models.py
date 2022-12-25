@@ -1,6 +1,5 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-
 from foodgram.settings import AUTH_USER_MODEL
 
 from .managers import CustomUserManager
@@ -62,6 +61,13 @@ class User(AbstractUser):
         help_text='Введите пароль.',
     )
 
+    objects = CustomUserManager()
+
+    class Meta:
+        ordering = ('-id',)
+        verbose_name = 'Пользователь'
+        verbose_name_plural = 'Пользователи'
+
     @property
     def is_moderator(self):
         return self.is_staff or self.role == self.MODERATOR
@@ -72,18 +78,6 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.get_full_name()
-
-    objects = CustomUserManager()
-
-    class Meta:
-        ordering = ('-id',)
-        verbose_name = 'Пользователь'
-        verbose_name_plural = 'Пользователи'
-
-
-class ConfirmationCode(models.Model):
-    user = models.OneToOneField('User', on_delete=models.CASCADE)
-    token = models.CharField(max_length=255)
 
 
 class Follow(models.Model):
@@ -98,9 +92,6 @@ class Follow(models.Model):
         related_name='following'
     )
 
-    def __str__(self):
-        return f'{self.user} - {self.author}'
-
     class Meta:
         verbose_name = 'Подписка'
         verbose_name_plural = 'Подписки'
@@ -114,3 +105,6 @@ class Follow(models.Model):
                 name='non_self_following',
             ),
         )
+
+    def __str__(self):
+        return f'{self.user} - {self.author}'

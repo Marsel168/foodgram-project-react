@@ -1,7 +1,6 @@
 from colorfield.fields import ColorField
 from django.core.validators import MinValueValidator
 from django.db import models
-
 from foodgram.settings import AUTH_USER_MODEL
 
 
@@ -143,17 +142,18 @@ class FavoriteRecipe(models.Model):
 class ShoppingList(models.Model):
     """Модель списка покупок."""
 
-    recipe = models.ForeignKey(
-        Recipe,
-        on_delete=models.CASCADE,
-        verbose_name='Рецепт',
-        related_name='shopping_recipe'
-    )
     user = models.ForeignKey(
         AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         verbose_name='Пользователь',
         related_name='shopping_user'
+    )
+
+    recipe = models.ForeignKey(
+        Recipe,
+        on_delete=models.CASCADE,
+        verbose_name='Рецепт',
+        related_name='shopping_recipe'
     )
 
     class Meta:
