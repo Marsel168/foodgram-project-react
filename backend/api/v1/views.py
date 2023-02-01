@@ -83,10 +83,6 @@ class RecipeViewSet(ModelViewSet):
     @action(detail=False, methods=['get'])
     def download_shopping_cart(self, request):
         ingredients = get_ingredients(request.user)
-        # html_template = render_to_string('shopping_cart.html',
-        #                                  {'ingredients': ingredients})
-        # html = HTML(string=html_template)
-        # result = html.write_pdf()
         response = HttpResponse(ingredients, content_type='application/pdf;')
         response['Content-Disposition'] = 'inline; filename=shopping_list.pdf'
         response['Content-Transfer-Encoding'] = 'binary'
