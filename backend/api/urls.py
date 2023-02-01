@@ -12,8 +12,8 @@ router_v1.register(r'tags', TagViewSet, basename='tags')
 router_v1.register(r'users', CustomUserViewSet, basename='users')
 
 auth_urls = [
-    path('auth/token/login/', TokenCreateView.as_view()),
-    path('auth/token/logout/', TokenDestroyView.as_view()),
+    path('token/login/', TokenCreateView.as_view()),
+    path('token/logout/', TokenDestroyView.as_view()),
 ]
 
 users_urls = [
@@ -24,7 +24,7 @@ users_urls = [
 ]
 
 urlpatterns = [
-    path('auth', include(auth_urls)),
+    path('auth/', include(auth_urls)),
     path('users', include(users_urls)),
     path('', include(router_v1.urls)),
     path('', include('djoser.urls'))
