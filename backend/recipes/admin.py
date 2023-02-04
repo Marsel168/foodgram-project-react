@@ -20,23 +20,14 @@ class IngredientAdmin(admin.ModelAdmin):
 
 @admin.register(Recipe)
 class RecipeAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'author', 'amount_favorites',
-                    'amount_tags', 'amount_ingredients')
+    list_display = ('id', 'name', 'author',
+                    'text', 'cooking_time', 'amount_favorites')
     list_filter = ('author', 'name', 'tags')
     search_fields = ('name',)
     empty_value_display = '-пусто-'
 
-    @staticmethod
-    def amount_favorites(obj):
-        return obj.favorites.count()
-
-    @staticmethod
-    def amount_tags(obj):
-        return "\n".join([i[0] for i in obj.tags.values_list('name')])
-
-    @staticmethod
-    def amount_ingredients(obj):
-        return "\n".join([i[0] for i in obj.ingredients.values_list('name')])
+    def amount_favorites(self, obj):
+        return obj.in_favorite.count()
 
 
 @admin.register(IngredientRecipe)

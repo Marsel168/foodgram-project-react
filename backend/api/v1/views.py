@@ -2,7 +2,6 @@ from django.http import HttpResponse
 from django_filters.rest_framework import DjangoFilterBackend
 from djoser.views import UserViewSet
 from rest_framework.decorators import action
-from rest_framework.filters import SearchFilter
 from rest_framework.generics import ListAPIView, get_object_or_404
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -16,7 +15,7 @@ from recipes.models import (FavoriteRecipe, Ingredient, Recipe, ShoppingList,
                             Tag)
 from users.models import Follow, User
 
-from .filters import RecipeFilter
+from .filters import IngredientFilter, RecipeFilter
 from .permissions import IsAuthorOrReadOnly
 from .serializers import (CustomUserSerializer, FollowSerializer,
                           IngredientSerializer, RecipeSerializer,
@@ -35,8 +34,10 @@ class IngredientViewSet(ReadOnlyModelViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
     pagination_class = None
-    filter_backends = (SearchFilter,)
-    search_fields = ('^name',)
+    filter_backends = (IngredientFilter,)
+    filterset_fields = ('name',)
+    search_fields = ('name',)
+    ordering_fields = ('name',)
 
 
 class RecipeViewSet(ModelViewSet):
@@ -46,6 +47,12 @@ class RecipeViewSet(ModelViewSet):
     filter_backends = (DjangoFilterBackend,)
     filterset_class = RecipeFilter
     pagination_class = PageNumberPagination
+    filterset_fields = [
+        'tags',
+        'author',
+        'is_favorited',
+        'is_in_shopping_cart'
+    ]
 
     @action(detail=True, methods=['post', 'delete'],
             permission_classes=[IsAuthenticated])
@@ -83,9 +90,8 @@ class RecipeViewSet(ModelViewSet):
     @action(detail=False, methods=['get'])
     def download_shopping_cart(self, request):
         ingredients = get_ingredients(request.user)
-        response = HttpResponse(ingredients, content_type='application/pdf;')
-        response['Content-Disposition'] = 'inline; filename=shopping_list.pdf'
-        response['Content-Transfer-Encoding'] = 'binary'
+        response = HttpResponse(ingredients, content_type='text/plain;')
+        response['Content-Disposition'] = 'inline; filename=shopping_list.txt'
         return response
 
 
