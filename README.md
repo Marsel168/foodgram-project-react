@@ -84,18 +84,18 @@ sudo apt install docker.io
 
 Заполните данными таблицу ингредиентов:
 ```
-docker compose exec web python manage.py load_csv_data
+docker compose exec backend python manage.py load_csv_data
 ```
 
 Для создания суперпользователя, используйте:
 ```
-docker compose exec web python manage.py createsuperuser
+docker compose exec backend python manage.py createsuperuser
 ```
 
 Соберите статические файлы в единое место (--no-input - без запроса параметров у пользователя):
 
 ```
-docker-compose exec web python manage.py collectstatic --no-input
+docker-compose exec backend python manage.py collectstatic --no-input
 ```
 
 Для остановки работы контейнера, удаления его и томов используйте:
