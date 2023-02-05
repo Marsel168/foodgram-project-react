@@ -9,9 +9,9 @@
 
 Документация по API: http://130.193.39.213/api/docs/
 
-Админка
+Админка     
 Login: admin    
-Password: admin
+Password: admin     
 mail: admin@mail.com
 
 ### Используемые технологии:
