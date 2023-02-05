@@ -10,8 +10,9 @@
 Документация по API: http://130.193.39.213/api/docs/
 
 Админка
-Login: marsel
-Password: marsel
+Login: admin    
+Password: admin
+mail: admin@mail.com
 
 ### Используемые технологии:
 - Python 3.8.6  
