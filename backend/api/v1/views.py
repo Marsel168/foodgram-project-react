@@ -3,7 +3,6 @@ from django_filters.rest_framework import DjangoFilterBackend
 from djoser.views import UserViewSet
 from rest_framework.decorators import action
 from rest_framework.generics import ListAPIView, get_object_or_404
-from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.status import (HTTP_201_CREATED, HTTP_204_NO_CONTENT,
@@ -16,6 +15,7 @@ from recipes.models import (FavoriteRecipe, Ingredient, Recipe, ShoppingList,
 from users.models import Follow, User
 
 from .filters import IngredientFilter, RecipeFilter
+from .pagination import LimitPageNumberPagination
 from .permissions import IsAuthorOrReadOnly
 from .serializers import (CustomUserSerializer, FollowSerializer,
                           IngredientSerializer, RecipeSerializer,
@@ -44,9 +44,10 @@ class RecipeViewSet(ModelViewSet):
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
     permission_classes = (IsAuthorOrReadOnly,)
+    pagination_class = LimitPageNumberPagination
     filter_backends = (DjangoFilterBackend,)
     filterset_class = RecipeFilter
-    pagination_class = PageNumberPagination
+
     filterset_fields = [
         'tags',
         'author',
